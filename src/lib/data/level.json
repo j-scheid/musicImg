@@ -3,20 +3,17 @@
         {
             "title": "Paradise City",
             "artist": "Guns 'n' Roses",
-            "audio": "paradise",
-            "img": "paradise"
+            "file": "paradise"
         },
         {
             "title": "Man on the moon",
             "artist": "R.E.M.",
-            "audio": "moon",
-            "img": "moon"
+            "file": "moon"
         },
         {
             "title": "Y.M.C.A.",
             "artist": "The Village People",
-            "audio": "ymca",
-            "img": "ymca"
+            "file": "ymca"
         }
     ]
 ]
