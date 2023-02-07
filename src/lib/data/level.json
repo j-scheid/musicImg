@@ -15,5 +15,22 @@
             "artist": "The Village People",
             "file": "ymca"
         }
+    ],
+    [
+        {
+            "title": "Message in a bottle",
+            "artist": "The Police",
+            "file": "bottle"
+        },
+        {
+            "title": "Highway to hell",
+            "artist": "ACDC",
+            "file": "highway"
+        },
+        {
+            "title": "Eye of the tiger",
+            "artist": "Survivor",
+            "file": "tiger"
+        }
     ]
 ]

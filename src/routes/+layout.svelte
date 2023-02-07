@@ -1,8 +1,10 @@
-<script>
+<script lang="ts">
 	import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
 	import '@skeletonlabs/skeleton/styles/all.css';
 	import '../app.postcss';
 	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
+	import { Modal, modalStore } from '@skeletonlabs/skeleton';
+	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 </script>
 
 <!-- App Shell -->
@@ -21,3 +23,4 @@
 	<!-- Page Route Content -->
 	<slot />
 </AppShell>
+<Modal />

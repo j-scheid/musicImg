@@ -7,6 +7,8 @@
 	const activeLvlStore: Writable<number> = localStorageStore('storeExample', 0);
 
 	import { get } from 'svelte/store';
+	import { modalStore } from '@skeletonlabs/skeleton';
+	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 	import allLevels from '$lib/data/level.json';
 
 	/* // Subscribe to the store
@@ -22,15 +24,15 @@
 	let store = get(lvl1);
 	let array = store.split(' ');
 
-	let activeLvl = 0;
-	let currLvl = allLevels[activeLvl];
-	let currSongId = 0;
+	$: activeLvl = 0;
+	$: currLvl = allLevels[activeLvl];
+	$: currSongId = 0;
 	$: currSong = currLvl[currSongId];
 	$: disablePrev = false;
 	$: disableNext = false;
 	$: currImg = '/ai-img/' + currSong.file + '.jpeg';
 	let revealed: Boolean = false;
-	$: correct = 0
+	$: correct = 0;
 
 	// Read value with automatic subscription
 	$lvl1;
@@ -53,12 +55,27 @@
 	function revealAnswer(): void {
 		revealed = true;
 	}
-	
-	function correctAnswer(): void{
-		correct++
-		nextSong()
+
+	function correctAnswer(): void {
+		correct++;
+		handleFeedback();
 	}
 
+	function wrongAnswer(): void {
+		handleFeedback();
+	}
+
+	function handleFeedback(): void {
+		if (currSongId == currLvl.length - 1) {
+			if (activeLvl == allLevels.length - 1) {
+				triggerAlert();
+			} else {
+				triggerConfirm();
+			}
+		} else {
+			nextSong();
+		}
+	}
 	function updateSong(): void {
 		revealed = false;
 		isLastTrack();
@@ -77,11 +94,52 @@
 			}
 		}
 	}
+
+	function triggerConfirm(): void {
+		let confirmBody =
+			'You were able to guess ' + correct + ' of ' + currLvl.length + ' song titles.';
+		const confirm: ModalSettings = {
+			type: 'confirm',
+			title: 'Congratulations!',
+			body: confirmBody,
+			// TRUE if confirm pressed, FALSE if cancel pressed
+			response: (r: Boolean) => handleNextLevel(r),
+			// Optionally override the button text
+			buttonTextCancel: 'Cancel',
+			buttonTextConfirm: 'Next Level'
+		};
+		modalStore.trigger(confirm);
+	}
+
+	function triggerAlert(): void {
+		let alertBody =
+			'You have played through all levels! Here is your last score: ' + correct + ' of ' + currLvl.length + ' song titles guessed correctly. Thank you for playing :)';
+		const alert: ModalSettings = {
+			type: 'alert',
+			title: 'The End...',
+			body: alertBody,
+			image: 'https://i.imgur.com/WOgTG96.gif',
+			buttonTextCancel: 'Close'
+		};
+		modalStore.trigger(alert);
+	}
+
+	function handleNextLevel(r: Boolean): void {
+		if (r) {
+			modalStore.close();
+			activeLvl++;
+			currSongId = 0;
+			correct = 0;
+			updateSong();
+		}
+	}
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">
 	<div class="text-center">
-		<p class="fixed top-24 right-10">{correct}/{currSongId} Correct Guesses</p>
+		<p class="fixed top-24 right-10">
+			Level {activeLvl + 1}: {correct}/{currSongId} correct guesses
+		</p>
 		<img src={currImg} class="object-center w-80 rounded-lg" alt="AI generated song cover" /><br />
 		<div class="h-24">
 			{#if revealed}
@@ -92,25 +150,26 @@
 		<br />
 		<div class="text-center">
 			{#if revealed}
-			<button
-			class="btn variant-ghost-surface btn-base"
-			on:click={nextSong}
-		>
-			Wrong
-		</button>
-		<button class="btn variant-ghost-surface btn-base" on:click={correctAnswer}> Correct </button>
+				<button class="btn variant-ghost-surface btn-base" on:click={wrongAnswer}> Wrong </button>
+				<button class="btn variant-ghost-surface btn-base" on:click={correctAnswer}>
+					Correct
+				</button>
 			{:else}
-			<button
-			class="btn variant-ghost-surface btn-base"
-			on:click={previousSong}
-			disabled={disablePrev}
-		>
-			Previous
-		</button>
-		<button class="btn variant-ghost-surface btn-base" on:click={revealAnswer}> Reveal </button>
-		<button class="btn variant-ghost-surface btn-base" on:click={nextSong} disabled={disableNext}>
-			Next
-		</button>
+				<button
+					class="btn variant-ghost-surface btn-base"
+					on:click={previousSong}
+					disabled={disablePrev}
+				>
+					Previous
+				</button>
+				<button class="btn variant-ghost-surface btn-base" on:click={revealAnswer}> Reveal </button>
+				<button
+					class="btn variant-ghost-surface btn-base"
+					on:click={nextSong}
+					disabled={disableNext}
+				>
+					Next
+				</button>
 			{/if}
 		</div>
 	</div>
