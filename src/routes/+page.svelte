@@ -28,7 +28,7 @@
 	$: currSong = currLvl[currSongId];
 	$: disablePrev = false;
 	$: disableNext = false;
-	$: currImg = '/ai-img/' + currSong.img + '.png';
+	$: currImg = '/ai-img/' + currSong.img + '.jpeg';
 	let revealed: Boolean = false;
 	$: correct = 0
 
