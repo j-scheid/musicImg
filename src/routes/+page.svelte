@@ -10,6 +10,8 @@
 	import { modalStore } from '@skeletonlabs/skeleton';
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 	import allLevels from '$lib/data/level.json';
+	import { goto } from '$app/navigation';
+	import {access_token} from '$lib/data/stores.js'
 
 	/* // Subscribe to the store
 	storeExample.subscribe(() => {});
@@ -33,14 +35,26 @@
 	$: currImg = '/ai-img/' + currSong.file + '.jpeg';
 	let revealed: Boolean = false;
 	$: correct = 0;
+	let loggingIn = false;
 
 	// Read value with automatic subscription
 	$lvl1;
 
 	onMount(async () => {
 		//console.log(activeLvl);
+		checkLogin();
 		isLastTrack();
 	});
+
+	function checkLogin(): void {
+		const params = new URLSearchParams(window.location.hash.substring(1));
+		const code = params.get('provider_refresh_token');
+		if (code != null) {
+			access_token.set(code)
+			goto('/companion');
+			loggingIn = true;
+		}
+	}
 
 	function nextSong(): void {
 		currSongId++;
@@ -97,14 +111,12 @@
 
 	function triggerConfirm(): void {
 		let confirmBody =
-			'You were able to guess ' + correct + ' of ' + currLvl.length + ' song titles.';
+			'You were able to guess <b>' + correct + ' of ' + currLvl.length + '</b> song titles.';
 		const confirm: ModalSettings = {
 			type: 'confirm',
 			title: 'Congratulations!',
 			body: confirmBody,
-			// TRUE if confirm pressed, FALSE if cancel pressed
 			response: (r: Boolean) => handleNextLevel(r),
-			// Optionally override the button text
 			buttonTextCancel: 'Cancel',
 			buttonTextConfirm: 'Next Level'
 		};
@@ -113,7 +125,11 @@
 
 	function triggerAlert(): void {
 		let alertBody =
-			'You have played through all levels! Here is your last score: ' + correct + ' of ' + currLvl.length + ' song titles guessed correctly. Thank you for playing :)';
+			'You have played through all levels! Here is your last score: <b>' +
+			correct +
+			' of ' +
+			currLvl.length +
+			'</b> song titles guessed correctly. Thank you for playing :)';
 		const alert: ModalSettings = {
 			type: 'alert',
 			title: 'The End...',
@@ -137,40 +153,47 @@
 
 <div class="container h-full mx-auto flex justify-center items-center">
 	<div class="text-center">
-		<p class="fixed top-24 right-10">
-			Level {activeLvl + 1}: {correct}/{currSongId} correct guesses
-		</p>
-		<img src={currImg} class="object-center w-80 rounded-lg" alt="AI generated song cover" /><br />
-		<div class="h-24">
-			{#if revealed}
-				<h2 class="font-bold">{currSong.title}</h2>
-				<h4 class="font-bold">{currSong.artist}</h4>
-			{/if}
-		</div>
-		<br />
-		<div class="text-center">
-			{#if revealed}
-				<button class="btn variant-ghost-surface btn-base" on:click={wrongAnswer}> Wrong </button>
-				<button class="btn variant-ghost-surface btn-base" on:click={correctAnswer}>
-					Correct
-				</button>
-			{:else}
-				<button
-					class="btn variant-ghost-surface btn-base"
-					on:click={previousSong}
-					disabled={disablePrev}
-				>
-					Previous
-				</button>
-				<button class="btn variant-ghost-surface btn-base" on:click={revealAnswer}> Reveal </button>
-				<button
-					class="btn variant-ghost-surface btn-base"
-					on:click={nextSong}
-					disabled={disableNext}
-				>
-					Next
-				</button>
-			{/if}
-		</div>
+		{#if loggingIn}
+			<p>Logging In</p>
+		{:else}
+			<p class="fixed top-24 right-10">
+				Level {activeLvl + 1}: {correct}/{currSongId} correct guesses
+			</p>
+			<img src={currImg} class="object-center w-80 rounded-lg" alt="AI generated song cover" /><br
+			/>
+			<div class="h-24">
+				{#if revealed}
+					<h2 class="font-bold">{currSong.title}</h2>
+					<h4 class="font-bold">{currSong.artist}</h4>
+				{/if}
+			</div>
+			<br />
+			<div class="text-center">
+				{#if revealed}
+					<button class="btn variant-ghost-surface btn-base" on:click={wrongAnswer}> Wrong </button>
+					<button class="btn variant-ghost-surface btn-base" on:click={correctAnswer}>
+						Correct
+					</button>
+				{:else}
+					<button
+						class="btn variant-ghost-surface btn-base"
+						on:click={previousSong}
+						disabled={disablePrev}
+					>
+						Previous
+					</button>
+					<button class="btn variant-ghost-surface btn-base" on:click={revealAnswer}>
+						Reveal
+					</button>
+					<button
+						class="btn variant-ghost-surface btn-base"
+						on:click={nextSong}
+						disabled={disableNext}
+					>
+						Skip
+					</button>
+				{/if}
+			</div>
+		{/if}
 	</div>
 </div>

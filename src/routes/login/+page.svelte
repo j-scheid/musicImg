@@ -11,7 +11,6 @@
 
 	function spotifyLogin(){
 		signInWithSpotify()
-		console.log($page.url.searchParams)
 	}
 	function spotifyLogout(){
 		console.log("Sign out!")
@@ -24,7 +23,6 @@
 		scopes: 'user-read-currently-playing'
 	}
   })
-  console.log($page.url.searchParams.get("access_token"))
 }
 async function signout() {
   const { error } = await supabase.auth.signOut()
@@ -34,16 +32,8 @@ async function signout() {
 const params = new URLSearchParams(window.location.hash.substring(1));
 const code = params.get("access_token");
 console.log(code)
-		fetchProfile(code)
 	});
 
-async function fetchProfile(code){
-    const result = await fetch("https://api.spotify.com//v1/me/player/currently-playing", {
-        method: "GET", headers: { Authorization: `Bearer ${code}` }
-    });
-	console.log(result)
-    return await result.json();
-}
 
 /* const { Configuration, OpenAIApi } = require("openai");
 
