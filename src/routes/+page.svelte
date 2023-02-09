@@ -33,9 +33,12 @@
 	$: disablePrev = false;
 	$: disableNext = false;
 	$: currImg = '/ai-img/' + currSong.file + '.jpeg';
+	$: currHint = 'ai-audio/' + currSong.file + '.mp3'
 	let revealed: Boolean = false;
 	$: correct = 0;
 	let loggingIn = false;
+	let audioElement
+	let hintPlaying= false
 
 	// Read value with automatic subscription
 	$lvl1;
@@ -92,6 +95,7 @@
 	}
 	function updateSong(): void {
 		revealed = false;
+		hintPlaying = false
 		isLastTrack();
 	}
 
@@ -149,6 +153,17 @@
 			updateSong();
 		}
 	}
+
+	function playHint(): void{
+    if (audioElement.paused) {
+        audioElement.play();
+		hintPlaying = true
+    }else{
+        audioElement.currentTime = 0
+		audioElement.pause()
+		hintPlaying = false
+    }
+	}
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">
@@ -162,7 +177,10 @@
 
 			  <img src={currImg} class="object-center w-80 rounded-lg" alt="AI generated song cover" /><br
 			  />
-			  <button class="btn variant-ghost-error">Audio Hint
+			  <audio src={currHint} bind:this={audioElement}></audio>
+			  <button class="btn variant-ghost-error" on:click={playHint}>{#if hintPlaying}
+				Stop {:else} Play
+			  {/if} Audio Hint 
 			</button>
 			
 			
