@@ -6,9 +6,14 @@
             "file": "paradise"
         },
         {
-            "title": "Man on the moon",
+            "title": "Man On The Moon",
             "artist": "R.E.M.",
             "file": "moon"
+        },
+        {
+            "title": "It's Raining Men",
+            "artist": "The Weather Girls",
+            "file": "raining"
         },
         {
             "title": "Y.M.C.A.",
@@ -18,7 +23,7 @@
     ],
     [
         {
-            "title": "Message in a bottle",
+            "title": "Message In A Bottle",
             "artist": "The Police",
             "file": "bottle"
         },
@@ -28,9 +33,36 @@
             "file": "highway"
         },
         {
+            "title": "Smooth Criminal",
+            "artist": "Michael Jackson",
+            "file": "smooth"
+        },
+        {
             "title": "Eye of the tiger",
             "artist": "Survivor",
             "file": "tiger"
+        }
+    ],
+    [
+        {
+            "title": "Watermelon Sugar",
+            "artist": "Harry Styles",
+            "file": "watermelon"
+        },
+        {
+            "title": "Wellerman",
+            "artist": "The Longest Johns",
+            "file": "wellerman"
+        },
+        {
+            "title": "Where Is The Love",
+            "artist": "Black Eyed Peas",
+            "file": "love"
+        },
+        {
+            "title": "Yellow Submarine",
+            "artist": "The Beatles",
+            "file": "yellow"
         }
     ]
 ]
