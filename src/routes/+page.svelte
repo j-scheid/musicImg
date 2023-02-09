@@ -159,9 +159,14 @@
 			<p class="fixed top-24 right-10">
 				Level {activeLvl + 1}: {correct}/{currSongId} correct guesses
 			</p>
-			<img src={currImg} class="object-center w-80 rounded-lg" alt="AI generated song cover" /><br
-			/>
-			<div class="h-24">
+
+			  <img src={currImg} class="object-center w-80 rounded-lg" alt="AI generated song cover" /><br
+			  />
+			  <button class="btn variant-ghost-error">Audio Hint
+			</button>
+			
+			
+			<div class="h-24 mt-4">
 				{#if revealed}
 					<h2 class="font-bold">{currSong.title}</h2>
 					<h4 class="font-bold">{currSong.artist}</h4>

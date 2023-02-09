@@ -34,7 +34,14 @@
 
 <div class="container h-full mx-auto flex justify-center items-center">
 	<div class="space-y-10 text-center">
-		<h2 class="font-bold">Welcome.</h2>
+		<h1>
+			<span
+				class="bg-gradient-to-br from-primary-300 via-primary-500 to-secondary-400 bg-clip-text text-transparent box-decoration-clone"
+			>
+				Spotify Image Companion.
+			</span>
+		</h1>
+		<h2 class="font-bold">Welcome, please log in.</h2>
 		<p>You can connect your Spotify account by loggin in through the button below. We will then create an image for the currently playing songs.</p>
 		<button on:click={spotifyLogin} class="btn variant-filled-primary lg">Log In with Spotify</button><br />
 	</div>
