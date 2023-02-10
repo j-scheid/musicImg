@@ -28,7 +28,6 @@
 	let audioElement: HTMLAudioElement;
 	let hintPlaying = false;
 	let tileUrl = '/help';
-	let answered = [false, true, false, false];
 
 	onMount(async () => {
 		checkLogin();
@@ -134,7 +133,6 @@
 		if (r) {
 			modalStore.close();
 			storeValue.set($storeValue + 1);
-			console.log($storeValue);
 			currSongId = 0;
 			correct = 0;
 			levelLock = false;
@@ -152,6 +150,10 @@
 			hintPlaying = false;
 		}
 	}
+	storeValue.subscribe(() => {
+		correct = 0;
+		currSongId = 0;
+	});
 </script>
 
 <div class="fixed">

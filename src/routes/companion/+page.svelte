@@ -25,6 +25,7 @@
 	);
 	function spotifyLogout() {
 		signout();
+		generatorCount = 0
 		goto('/login')
 	}
 	async function signout() {
@@ -91,7 +92,7 @@
 
 	function checkSongChange(song: string, artist: string): void {
 		if (song != previousSong || artist != previousArtist) {
-			if (generatorCount <= 1) {
+			if (generatorCount <= 2) {
 				console.log('Generations: ' + generatorCount);
 				generatorCount++;
 				generateImage(song);
@@ -139,7 +140,7 @@
 		const alert: ModalSettings = {
 			type: 'alert',
 			title: 'Limit exceeded!',
-			body: 'This is a project funded by students so we kindly ask you not to abuse the image generator. You can refresh the page and log in again to receive additional 3 image generations. Thank you for understanding.',
+			body: 'This is a project funded by students so we kindly ask you not to abuse the image generator. You can sign out and log in again to receive additional 3 image generations. Thank you for understanding.',
 			buttonTextCancel: 'I understand'
 		};
 		modalStore.trigger(alert);
