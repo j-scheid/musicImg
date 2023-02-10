@@ -4,14 +4,11 @@
 	import '../app.postcss';
 	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
 	import { Modal, modalStore } from '@skeletonlabs/skeleton';
-	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 	import { menu } from '@skeletonlabs/skeleton';
 </script>
 
-<!-- App Shell -->
 <AppShell slotSidebarLeft="bg-surface-500/5 w-56 p-4">
 	<svelte:fragment slot="header">
-		<!-- App Bar -->
 		<AppBar>
 			<svelte:fragment slot="lead">
 				<a href="/"><strong class="text-xl uppercase">AI + Music + Images</strong></a>
@@ -38,7 +35,6 @@
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
-	<!-- Page Route Content -->
 	<slot />
 </AppShell>
 <Modal />

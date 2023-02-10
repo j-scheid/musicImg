@@ -1,7 +1,5 @@
-<!-- YOU CAN DELETE EVERYTHING IN THIS PAGE -->
 <script>
 	import { createClient } from '@supabase/supabase-js';
-	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 
 	const OAIKEY = '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';
@@ -29,6 +27,7 @@
 		const code = params.get('access_token');
 	});
 </script>
+
 <svelte:head>
 	<title>Login - AI + Music + Image</title>
 </svelte:head>
@@ -49,11 +48,12 @@
 		</p>
 		<button on:click={spotifyLogin} class="btn variant-filled-primary lg"
 			>Log In with Spotify</button
-		><br /> 
+		><br />
 		<div class="card variant-soft-surface p-4">
-		<i class="text-sm"
-			>Please send your Spotify account email to the administrators if you have never logged in
-			before. <br /> Accounts need to be whitelisted in order for the service to function.</i
-		></div>
+			<i class="text-sm"
+				>Please send your Spotify account email to the administrators if you have never logged in
+				before. <br /> Accounts need to be whitelisted in order for the service to function.</i
+			>
+		</div>
 	</div>
 </div>

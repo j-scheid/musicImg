@@ -7,15 +7,15 @@
 	import { goto } from '$app/navigation';
 
 	let refresh_token: string;
-	const updateFrequency = 3000; //check spotify API every seconds
+	const updateFrequency = 3000;
 	let noSongHintVisible: boolean = true;
 	let generatorCount = 0;
 	let currImg = '';
 
 	access_token.subscribe((value) => {
 		refresh_token = value;
-		if(refresh_token === ''){
-			goto('/login')
+		if (refresh_token === '') {
+			goto('/login');
 		}
 	});
 
@@ -25,12 +25,12 @@
 	);
 	function spotifyLogout() {
 		signout();
-		generatorCount = 0
-		goto('/login')
+		generatorCount = 0;
+		goto('/login');
 	}
 	async function signout() {
 		const { error } = await supabase.auth.signOut();
-		access_token.set('')
+		access_token.set('');
 	}
 
 	const client_id = 'f9877a5f4b0846888428579265af8e0d';
@@ -38,7 +38,6 @@
 
 	const basic = btoa(`${client_id}:${client_secret}`);
 	const NOW_PLAYING_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing`;
-	const TOP_TRACKS_ENDPOINT = `https://api.spotify.com/v1/me/top/tracks`;
 	const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
 
 	const getAccessToken = async () => {
@@ -59,12 +58,13 @@
 	let data: any;
 	$: songName = '';
 	$: artistName = '';
-	$: songFormat = songName.replace(/[^\w\s-]/gi, '')
-	$: artistFormat = artistName.replace(/[^\w\s-]/gi, '')
+	$: songFormat = songName.replace(/[^\w\s-]/gi, '');
+	$: artistFormat = artistName.replace(/[^\w\s-]/gi, '');
 	let previousSong: string;
 	let previousArtist: string;
+
 	onMount(async () => {
-		getNowPlaying()
+		getNowPlaying();
 		var intervalID = window.setInterval(getNowPlaying, updateFrequency);
 	});
 
@@ -93,7 +93,6 @@
 	function checkSongChange(song: string, artist: string): void {
 		if (song != previousSong || artist != previousArtist) {
 			if (generatorCount <= 2) {
-				console.log('Generations: ' + generatorCount);
 				generatorCount++;
 				generateImage(song);
 			} else {
@@ -122,18 +121,27 @@
 		};
 
 		var response = await fetch('https://dezgo.p.rapidapi.com/text2image', options);
-		console.log(response);
 		var pngBlob = await response.blob();
 
 		imgUrl = URL.createObjectURL(pngBlob);
-		saveImg(imgUrl)
+		saveImg(imgUrl);
 	}
 
-	async function saveImg(src: string){
-		console.log(songFormat + '-' + artistFormat)
+	async function saveImg(src: string) {
 		const url = src;
 		const blob = await fetch(url).then((r) => r.blob());
-		await supabase.storage.from('generated-img').upload('TestBatch/' + songFormat + '-' + artistFormat + '-' + Math.random().toString(36).substr(2, 5) + '.jpeg', blob);
+		await supabase.storage
+			.from('generated-img')
+			.upload(
+				'TestBatch/' +
+					songFormat +
+					'-' +
+					artistFormat +
+					'-' +
+					Math.random().toString(36).substr(2, 5) +
+					'.jpeg',
+				blob
+			);
 	}
 
 	function triggerAlert(): void {
@@ -146,6 +154,7 @@
 		modalStore.trigger(alert);
 	}
 </script>
+
 <svelte:head>
 	<title>Spotify Image Companion - AI + Music + Image</title>
 </svelte:head>
@@ -169,7 +178,7 @@
 			<h2 class="font-bold">{songName}</h2>
 			<h4 class="font-bold">{artistName}</h4>
 		{/if}
-<br><br><br>
+		<br /><br /><br />
 		<button on:click={spotifyLogout}>Sign Out</button>
 	</div>
 </div>

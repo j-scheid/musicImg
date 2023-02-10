@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 </script>
+
 <svelte:head>
 	<title>Error - AI + Music + Image</title>
 </svelte:head>
@@ -14,6 +15,11 @@
 			</span>
 		</h1>
 		<br />
-		<button class="btn bg-white mt-6 text-gray-800" on:click={()=> { goto('/')}}>Go to Home</button>
+		<button
+			class="btn bg-white mt-6 text-gray-800"
+			on:click={() => {
+				goto('/');
+			}}>Go to Home</button
+		>
 	</div>
 </div>

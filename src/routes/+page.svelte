@@ -12,7 +12,6 @@
 	const storeValue: Writable<number> = writable(1);
 
 	$: activeLvl = $storeValue - 1;
-
 	$: currLvl = allLevels[activeLvl];
 	$: currSongId = 0;
 	$: currSongIndex = 4;
@@ -153,9 +152,10 @@
 	storeValue.subscribe(() => {
 		correct = 0;
 		currSongId = 0;
-		lastSong = false
+		lastSong = false;
 	});
 </script>
+
 <svelte:head>
 	<title>Guessing Game - AI + Music + Image</title>
 </svelte:head>
