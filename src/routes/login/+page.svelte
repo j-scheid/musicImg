@@ -27,7 +27,6 @@
 	onMount(async () => {
 		const params = new URLSearchParams(window.location.hash.substring(1));
 		const code = params.get('access_token');
-		console.log(code);
 	});
 </script>
 

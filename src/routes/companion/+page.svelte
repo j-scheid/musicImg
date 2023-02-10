@@ -58,6 +58,8 @@
 	let data: any;
 	$: songName = '';
 	$: artistName = '';
+	$: songFormat = songName.replace(/[^\w\s-]/gi, '')
+	$: artistFormat = artistName.replace(/[^\w\s-]/gi, '')
 	let previousSong: string;
 	let previousArtist: string;
 	onMount(async () => {
@@ -90,7 +92,7 @@
 	function checkSongChange(song: string, artist: string): void {
 		if (song != previousSong || artist != previousArtist) {
 			if (generatorCount <= 3) {
-				console.log(generatorCount);
+				console.log('Generations: ' +generatorCount);
 				generatorCount++;
 				generateImage(song);
 			} else {
@@ -122,16 +124,15 @@
 		console.log(response);
 		var pngBlob = await response.blob();
 
-		console.log('Got the image as a blob:', pngBlob);
-
 		imgUrl = URL.createObjectURL(pngBlob);
 		saveImg(imgUrl)
 	}
 
 	async function saveImg(src: string){
+		console.log(songFormat + '-' + artistFormat)
 		const url = src;
 		const blob = await fetch(url).then((r) => r.blob());
-		await supabase.storage.from('generated-img').upload('TestBatch/' + songName + '-' + artistName + '-' + Math.random().toString(36).substr(2, 5) + '.jpeg', blob);
+		await supabase.storage.from('generated-img').upload('TestBatch/' + songFormat + '-' + artistFormat + '-' + Math.random().toString(36).substr(2, 5) + '.jpeg', blob);
 	}
 
 	function triggerAlert(): void {
