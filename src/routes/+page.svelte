@@ -1,50 +1,36 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { localStorageStore } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
-	import type { Writable } from 'svelte/store';
-	const lvl1: Writable<string> = localStorageStore('storeExample', 'true false');
-	const activeLvlStore: Writable<number> = localStorageStore('storeExample', 0);
-
-	import { get } from 'svelte/store';
 	import { modalStore } from '@skeletonlabs/skeleton';
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 	import allLevels from '$lib/data/level.json';
 	import { goto } from '$app/navigation';
-	import {access_token} from '$lib/data/stores.js'
+	import { access_token } from '$lib/data/stores.js';
+	import { AppRail, AppRailTile } from '@skeletonlabs/skeleton';
+	import { page } from '$app/stores';
+	import { writable, type Writable } from 'svelte/store';
 
-	/* // Subscribe to the store
-	storeExample.subscribe(() => {});
+	const storeValue: Writable<number> = writable(1);
 
-	// Update the value
-	storeExample.update(() => {});
+	$: activeLvl = $storeValue - 1;
 
-	// Set the value
-	storeExample.set(() => {}); */
-
-	// Read the value
-	let store = get(lvl1);
-	let array = store.split(' ');
-
-	$: activeLvl = 0;
 	$: currLvl = allLevels[activeLvl];
 	$: currSongId = 0;
+	$: currSongIndex = 4;
 	$: currSong = currLvl[currSongId];
 	$: disablePrev = false;
-	$: disableNext = false;
+	$: lastSong = false;
 	$: currImg = '/ai-img/' + currSong.file + '.jpeg';
-	$: currHint = 'ai-audio/' + currSong.file + '.mp3'
+	$: currHint = 'ai-audio/' + currSong.file + '.mp3';
 	let revealed: Boolean = false;
 	$: correct = 0;
+	$: levelLock = false;
 	let loggingIn = false;
-	let audioElement
-	let hintPlaying= false
-
-	// Read value with automatic subscription
-	$lvl1;
+	let audioElement: HTMLAudioElement;
+	let hintPlaying = false;
+	let tileUrl = '/help';
+	let answered = [false, true, false, false];
 
 	onMount(async () => {
-		//console.log(activeLvl);
 		checkLogin();
 		isLastTrack();
 	});
@@ -53,7 +39,7 @@
 		const params = new URLSearchParams(window.location.hash.substring(1));
 		const code = params.get('provider_refresh_token');
 		if (code != null) {
-			access_token.set(code)
+			access_token.set(code);
 			goto('/companion');
 			loggingIn = true;
 		}
@@ -84,6 +70,7 @@
 
 	function handleFeedback(): void {
 		if (currSongId == currLvl.length - 1) {
+			levelLock = true;
 			if (activeLvl == allLevels.length - 1) {
 				triggerAlert();
 			} else {
@@ -95,16 +82,16 @@
 	}
 	function updateSong(): void {
 		revealed = false;
-		hintPlaying = false
+		hintPlaying = false;
 		isLastTrack();
 	}
 
 	function isLastTrack(): void {
 		if (currSongId === currLvl.length - 1) {
-			disableNext = true;
+			lastSong = true;
 			disablePrev = false;
 		} else {
-			disableNext = false;
+			lastSong = false;
 			if (currSongId === 0) {
 				disablePrev = true;
 			} else {
@@ -121,7 +108,6 @@
 			title: 'Congratulations!',
 			body: confirmBody,
 			response: (r: Boolean) => handleNextLevel(r),
-			buttonTextCancel: 'Cancel',
 			buttonTextConfirm: 'Next Level'
 		};
 		modalStore.trigger(confirm);
@@ -147,43 +133,62 @@
 	function handleNextLevel(r: Boolean): void {
 		if (r) {
 			modalStore.close();
-			activeLvl++;
+			storeValue.set($storeValue + 1);
+			console.log($storeValue);
 			currSongId = 0;
 			correct = 0;
+			levelLock = false;
 			updateSong();
 		}
 	}
 
-	function playHint(): void{
-    if (audioElement.paused) {
-        audioElement.play();
-		hintPlaying = true
-    }else{
-        audioElement.currentTime = 0
-		audioElement.pause()
-		hintPlaying = false
-    }
+	function playHint(): void {
+		if (audioElement.paused) {
+			audioElement.play();
+			hintPlaying = true;
+		} else {
+			audioElement.currentTime = 0;
+			audioElement.pause();
+			hintPlaying = false;
+		}
 	}
 </script>
+
+<div class="fixed">
+	<AppRail selected={storeValue}>
+		<svelte:fragment slot="lead">
+			<div class:bg-primary-500={tileUrl === $page.url.pathname} class="text-center">
+				<AppRailTile tag="a" href={tileUrl}>Help</AppRailTile>
+			</div>
+		</svelte:fragment>
+		<AppRailTile label={activeLvl == 0 ? correct + '/' + currSongIndex : ''} title="Tile" value={1}
+			>1</AppRailTile
+		>
+		<AppRailTile label={activeLvl == 1 ? correct + '/' + currSongIndex : ''} title="Tile" value={2}
+			>2</AppRailTile
+		>
+		<AppRailTile label={activeLvl == 2 ? correct + '/' + currSongIndex : ''} title="Tile" value={3}
+			>3</AppRailTile
+		>
+	</AppRail>
+</div>
 
 <div class="container h-full mx-auto flex justify-center items-center">
 	<div class="text-center">
 		{#if loggingIn}
 			<p>Logging In</p>
 		{:else}
-			<p class="fixed top-24 right-10">
-				Level {activeLvl + 1}: {correct}/{currSongId} correct guesses
-			</p>
-
-			  <img src={currImg} class="object-center w-80 rounded-lg" alt="AI generated song cover" /><br
-			  />
-			  <audio src={currHint} bind:this={audioElement}></audio>
-			  <button class="btn variant-ghost-error" on:click={playHint}>{#if hintPlaying}
-				Stop {:else} Play
-			  {/if} Audio Hint 
+			<img src={currImg} class="object-center w-80 rounded-lg" alt="AI generated song cover" /><br
+			/>
+			<audio src={currHint} bind:this={audioElement} />
+			<button class="btn variant-ghost-error" on:click={playHint}
+				>{#if hintPlaying}
+					Stop
+				{:else}
+					Play
+				{/if} Audio Hint
 			</button>
-			
-			
+
 			<div class="h-24 mt-4">
 				{#if revealed}
 					<h2 class="font-bold">{currSong.title}</h2>
@@ -193,28 +198,37 @@
 			<br />
 			<div class="text-center">
 				{#if revealed}
-					<button class="btn variant-ghost-surface btn-base" on:click={wrongAnswer}> Wrong </button>
-					<button class="btn variant-ghost-surface btn-base" on:click={correctAnswer}>
-						Correct
-					</button>
+					{#if levelLock}
+						<button class="btn variant-ringed-surface btn-base" on:click={wrongAnswer}>
+							Finish
+						</button>
+					{:else}
+						<button class="btn variant-ringed-surface btn-base" on:click={wrongAnswer}>
+							Wrong
+						</button>
+						<button class="btn variant-ringed-surface btn-base" on:click={correctAnswer}>
+							Correct
+						</button>
+					{/if}
 				{:else}
-					<button
-						class="btn variant-ghost-surface btn-base"
+					<!-- <button
+						class="btn variant-ringed-surface btn-base"
 						on:click={previousSong}
 						disabled={disablePrev}
 					>
 						Previous
-					</button>
-					<button class="btn variant-ghost-surface btn-base" on:click={revealAnswer}>
+					</button> -->
+					<button class="btn variant-ringed-surface btn-base" on:click={revealAnswer}>
 						Reveal
 					</button>
-					<button
-						class="btn variant-ghost-surface btn-base"
-						on:click={nextSong}
-						disabled={disableNext}
-					>
-						Skip
-					</button>
+
+					{#if lastSong}
+						<button class="btn variant-ringed-surface btn-base" on:click={wrongAnswer}>
+							Finish
+						</button>
+					{:else}
+						<button class="btn variant-ringed-surface btn-base" on:click={nextSong}>Skip</button>
+					{/if}
 				{/if}
 			</div>
 		{/if}

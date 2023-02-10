@@ -106,7 +106,7 @@
 		encodedParams.append('guidance', '8');
 		encodedParams.append('height', '320');
 		encodedParams.append('width', '320');
-		encodedParams.append('steps', '15');
+		encodedParams.append('steps', '20');
 
 		const options = {
 			method: 'POST',

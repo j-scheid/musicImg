@@ -28,8 +28,7 @@
 		const params = new URLSearchParams(window.location.hash.substring(1));
 		const code = params.get('access_token');
 		console.log(code);
-
-	})
+	});
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">
@@ -42,7 +41,17 @@
 			</span>
 		</h1>
 		<h2 class="font-bold">Welcome, please log in.</h2>
-		<p>You can connect your Spotify account by loggin in through the button below. We will then create an image for the currently playing songs.</p>
-		<button on:click={spotifyLogin} class="btn variant-filled-primary lg">Log In with Spotify</button><br />
+		<p>
+			You can connect your Spotify account by loggin in through the button below. We will then
+			create an image for the currently playing songs.
+		</p>
+		<button on:click={spotifyLogin} class="btn variant-filled-primary lg"
+			>Log In with Spotify</button
+		><br /> 
+		<div class="card variant-soft-surface p-4">
+		<i class="text-sm"
+			>Please send your Spotify account email to the administrators if you have never logged in
+			before. <br /> Accounts need to be whitelisted in order for the service to function.</i
+		></div>
 	</div>
 </div>
