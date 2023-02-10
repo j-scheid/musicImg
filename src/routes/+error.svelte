@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 </script>
-
+<svelte:head>
+	<title>Error - AI + Music + Image</title>
+</svelte:head>
 <div class="container h-full mx-auto flex justify-center items-center">
 	<div class="text-center">
 		<h1>

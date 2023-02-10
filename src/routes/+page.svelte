@@ -153,8 +153,12 @@
 	storeValue.subscribe(() => {
 		correct = 0;
 		currSongId = 0;
+		lastSong = false
 	});
 </script>
+<svelte:head>
+	<title>Guessing Game - AI + Music + Image</title>
+</svelte:head>
 
 <div class="fixed">
 	<AppRail selected={storeValue}>

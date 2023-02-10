@@ -2,6 +2,10 @@
 	import { goto } from '$app/navigation';
 </script>
 
+<svelte:head>
+	<title>About us - AI + Music + Image</title>
+</svelte:head>
+
 <div class="container h-full mx-auto flex justify-center items-center">
 	<div class="text-center">
 		<h1>

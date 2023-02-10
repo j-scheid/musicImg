@@ -146,6 +146,9 @@
 		modalStore.trigger(alert);
 	}
 </script>
+<svelte:head>
+	<title>Spotify Image Companion - AI + Music + Image</title>
+</svelte:head>
 
 <div class="container h-full mx-auto flex justify-center items-center">
 	<div class="text-center">

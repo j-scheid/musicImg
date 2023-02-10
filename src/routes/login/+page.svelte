@@ -29,6 +29,9 @@
 		const code = params.get('access_token');
 	});
 </script>
+<svelte:head>
+	<title>Login - AI + Music + Image</title>
+</svelte:head>
 
 <div class="container h-full mx-auto flex justify-center items-center">
 	<div class="space-y-10 text-center">

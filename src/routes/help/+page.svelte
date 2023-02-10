@@ -20,6 +20,9 @@ const storeValue: Writable<number> = writable(0);
 	
 	
 </script>
+<svelte:head>
+	<title>How to play - AI + Music + Image</title>
+</svelte:head>
 <div class="fixed">
 <AppRail selected={storeValue}>
 	<svelte:fragment slot="lead">
