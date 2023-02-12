@@ -32,7 +32,7 @@
 	<title>Login - AI + Music + Image</title>
 </svelte:head>
 
-<div class="container h-full mx-auto flex justify-center items-center">
+<div class="container h-full mx-auto flex justify-center items-center px-10 py-12 sm:px-24">
 	<div class="space-y-10 text-center">
 		<h1>
 			<span

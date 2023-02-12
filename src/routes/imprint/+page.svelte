@@ -2,7 +2,7 @@
 	<title>About us - AI + Music + Image</title>
 </svelte:head>
 
-<div class="px-24 pt-12">
+<div class="px-10 pt-12 sm:px-24">
 	<div class="text-center">
 		<h1>
 			<span

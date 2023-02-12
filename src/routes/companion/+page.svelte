@@ -159,7 +159,7 @@
 	<title>Spotify Image Companion - AI + Music + Image</title>
 </svelte:head>
 
-<div class="container h-full mx-auto flex justify-center items-center">
+<div class="container h-full mx-auto flex justify-center items-center py-12 px-10 sm:px-24">
 	<div class="text-center">
 		{#if noSongHintVisible}
 			<aside class="alert variant-ghost-primary">
@@ -172,7 +172,7 @@
 			<!-- svelte-ignore a11y-img-redundant-alt -->
 			<img
 				src={imgUrl}
-				class="object-center w-80 rounded-lg"
+				class="object-center w-80 rounded-lg scale-in-center mx-auto"
 				alt="We are generating an image for you..."
 			/><br />
 			<h2 class="font-bold">{songName}</h2>

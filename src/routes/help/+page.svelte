@@ -23,7 +23,7 @@
 	</AppRail>
 </div>
 
-<div class="container h-full mx-auto flex justify-center items-center">
+<div class="container h-full mx-auto flex justify-center items-center py-12 px-10 sm:px-24">
 	<div class="text-center">
 		<h1>
 			<span
@@ -36,6 +36,8 @@
 		<p>
 			The images in the game show the way an AI sees a popular song. Your job is to guess the title
 			and artist. <br /><br />
+			You can check if you guessed correctly by clikcing the "Reveal" button at the bottom of the page. <br>
+			Similarly to flashcards, choose if you were right or wrong. You'll see your score on the left as well as at the end of each level. <br><br>
 			We also provide clues to the solution in form of an audio file. Click on "Play Audio Hint" to hear
 			an AI interpret the song for you. Notice how the lyrics are always the same as the original.<br
 			/><br />

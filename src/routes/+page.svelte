@@ -180,14 +180,14 @@
 	</AppRail>
 </div>
 
-<div class="container h-full mx-auto flex justify-center items-center">
+<div class="container h-full mx-auto flex justify-center items-center py-12 px-10 sm:px-24">
 	<div class="text-center">
 		{#if loggingIn}
 			<p>Logging In</p>
 		{:else}
 			<img
 				src={currImg}
-				class="object-center w-80 rounded-lg scale-in-center"
+				class="object-center w-80 rounded-lg scale-in-center mx-auto"
 				alt="AI generated song cover"
 			/><br />
 			<audio src={currHint} bind:this={audioElement} />

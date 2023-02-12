@@ -24,6 +24,9 @@
 							<li><a href="/">Guessing Game</a></li>
 							<li><a href="/login">Spotify Companion</a></li>
 							<li><a href="/about">About</a></li>
+							<hr>
+							<li><a href="/imprint">Imprint</a></li>
+							<li><a href="/privacy">Privacy</a></li>
 						</ul>
 					</nav>
 				</span>
@@ -38,19 +41,22 @@
 	<slot />
 </AppShell>
 <Modal />
-<p class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-xs">
-	<a href="/imprint" class="!text-gray-400 !no-underline">Impressum</a> |
+<p class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-xs legal">
+	<a href="/imprint" class="!text-gray-400 !no-underline">Imprint</a> |
 	<a href="/privacy" class="!text-gray-400 !no-underline">Privacy</a>
 </p>
 
 <style>
 	@media screen and (max-width: 600px) {
 		.normal {
-			display: none;
+			display: none !important;
 		}
 		.mobile {
 			float: right;
 			display: block;
+		}
+		.legal {
+			display: none
 		}
 	}
 
