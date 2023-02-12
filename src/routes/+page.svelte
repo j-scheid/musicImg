@@ -153,6 +153,7 @@
 		correct = 0;
 		currSongId = 0;
 		lastSong = false;
+		levelLock = false;
 	});
 </script>
 
@@ -184,8 +185,11 @@
 		{#if loggingIn}
 			<p>Logging In</p>
 		{:else}
-			<img src={currImg} class="object-center w-80 rounded-lg scale-in-center" alt="AI generated song cover" /><br
-			/>
+			<img
+				src={currImg}
+				class="object-center w-80 rounded-lg scale-in-center"
+				alt="AI generated song cover"
+			/><br />
 			<audio src={currHint} bind:this={audioElement} />
 			<button class="btn variant-ghost-error" on:click={playHint}
 				>{#if hintPlaying}
